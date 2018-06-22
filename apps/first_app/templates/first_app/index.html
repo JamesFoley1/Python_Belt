@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Welcome</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script>
+    $(document).ready(function() {
+    $('#modal1').modal();
+    });
+    </script>
+</head>
+<body class="stars">
+    <div class="wrapper">
+        <nav>
+            <div class="nav-wrapper">
+                <a class="brand-logo">Register</a>
+                <ul id="nav-mobile" class="right">
+                    <li>
+                        <a onclick="$('#modal1').modal('open');">Log In</a>
+                        <div id="modal1" class="modal">
+                            <div class="modal-content modal-text">
+                                <div class="row">
+                                    <form class="col sm11 m11 l11"action="login" method="post">
+                                        {% csrf_token %}
+                                        <h3 class="center login">Login</h3>
+                                        <label>Email:</label>
+                                        <input type="text" name="email2" value="">
+                                        <label>Password:</label>
+                                        <input type="password" name="password2" value="">
+                                        <input class="btn" type="submit" name="submit" value="Login">
+                                        <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Don't have an account? Register here.</a>
+                                    </form>
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <p class="{{ message.tags }}">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col s12 m5 l5 register">
+                <div class="row card">
+                    <form class="col sm11 m11 l11" action="register" method="post">
+                        <h3 class="center">Register</h3>
+                        {% csrf_token %}
+                        <label>First Name:</label>
+                        <input type="text" name="first_name" value="">
+                        <label>Last Name:</label>
+                        <input type="text" name="last_name" value="">
+                        <label>Email:</label>
+                        <input type="text" name="email" value="">
+                        <label>Password:</label>
+                        <input type="password" name="password" value="">
+                        <label>Confirm Password:</label>
+                        <input type="password" name="pw_confirm" value="">
+                        <input class="btn" type="submit" name="submit" value="Register"><br><br>
+                    </form>
+                </div>
+            </div>
+            <div class="right col s12 m5 l6 login" name="Login">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Quote Dashboard</title>
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <nav>
+            <div class="nav-wrapper">
+                <a class="left brand-logo hide-on-med-and-down">Welcome {{ request.session.first_name }}!</a>
+                <ul id="nav-mobile" class="right">
+                <li><a href="/user/edit">Edit My Account</a></li>
+                <li><a href="/">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="row">
+            <div class="col s12 m5 l5 register">
+                <div class="row card scroll-box">
+                    <div class="col sm11 m11 l11">
+                        <h4 class="center">Quotes</h4>
+                        {% for quote in quote %}
+                        <ul class="row stars">
+                            <li>
+                                <p>{{ quote.author }} says: {{ quote.content }}</p>
+                                <p>Posted By: <a href="/user/{{ quote.user.id }}">{{ quote.user.first_name }}</a></p>
+                            </li>
+                            <li><p>likes: {{ quote.likes }}</p></li>
+                            <li><a class="btn-small" href="like/{{ quote.id }}">Like</a></li><br>
+                            {% if quote.user.id == request.session.user_id %}
+                                <a class="btn-small" href="/quotes/destroy/{{ quote.id }}">Delete</a>
+                            {% endif %}
+                        </ul>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="right col s12 m5 l6 login">
+                <div class="row card scroll-box">
+                    <form class="col sm12 m12 l12" action="/quotes/add" method="post">
+                        {% csrf_token %}
+                        <h4 class="center">Add a Quote</h4>
+                        Author: <input type="text" name="author">
+                        Quote: <textarea class="materialize-textarea" name="quote"></textarea>
+                        <button class="btn-small" type="submit">Submit</button> 
+                    </form>
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
